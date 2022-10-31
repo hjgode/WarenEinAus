@@ -60,13 +60,13 @@
                 android:layout_margin="8sp"
                 android:text="Lieferrant:" />
 
-            <EditText
-                android:id="@+id/editTextLieferrant"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8sp"
-                android:ems="10"
-                 />
+                <AutoCompleteTextView
+                    android:id="@+id/editTextLieferrant"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8sp"
+                    android:ems="10"
+                    android:inputType="textNoSuggestions" />
             </TableRow>
 
             <TableRow
@@ -78,7 +78,7 @@
                     android:layout_margin="8sp"
                     android:text="Art:" />
 
-                <EditText
+                <AutoCompleteTextView
                     android:id="@+id/editTextArt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -102,7 +102,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8sp"
                     android:ems="10"
-                    />
+                    android:inputType="textMultiLine|textNoSuggestions"
+                    android:scrollbars="vertical" />
 
             </TableRow>
             <TableRow
@@ -120,7 +121,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8sp"
                     android:ems="10"
-                    />
+                    android:scrollbars="vertical" />
 
             </TableRow>
             <TableRow
@@ -134,13 +135,28 @@
 
                 <EditText
                     android:id="@+id/editTextFotos"
-                    android:layout_width="wrap_content"
+                    android:layout_width="149dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="8sp"
-                    android:ems="10"
-                    />
+                    android:ems="10" />
+
+                <Button
+                    android:id="@+id/btnAddPhoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+" />
 
             </TableRow>
         </TableLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginLeft="36dp"
+        android:text="Speichern"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="@+id/textView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

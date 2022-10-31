@@ -2,7 +2,7 @@ package com.example.wareneinaus;
 
 import java.util.Date;
 
-public class anlieferer {
+public class WareneingangDaten {
 
     public Date datum;
     public String name;
@@ -11,7 +11,7 @@ public class anlieferer {
     public String inhalt;
     public String[] fotos;
 
-    public anlieferer(){
+    public WareneingangDaten(){
         datum=new Date();
         name="";
         art="";
