@@ -9,7 +9,8 @@ public class WareneingangDaten {
     public String art;
     public String absender;
     public String inhalt;
-    public String[] fotos;
+    public String email;
+    public String fotos;
 
     public WareneingangDaten(){
         datum=new Date();
@@ -17,6 +18,7 @@ public class WareneingangDaten {
         art="";
         absender="";
         inhalt="";
-        fotos=new String[]{};
+        fotos="";
+        email="";
     }
 }
