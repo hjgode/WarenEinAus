@@ -41,12 +41,15 @@ public class EingangActivity extends AppCompatActivity {
     private File pictureSaveFolderPath;
 
     EditText editTextPhotoFiles;
-
+    ArrayList<Uri> attachemntList=new ArrayList<Uri>();
     Context context=this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        attachemntList.clear();
+
         setContentView(R.layout.activity_eingang);
 
         EditText editTextDatum;
@@ -172,8 +175,10 @@ public class EingangActivity extends AppCompatActivity {
 
                     // Set the camera taken image bitmap in the image view component to display.
                     //takePictureImageView.setImageBitmap(pictureBitmap);
-                    String sFilename=outputImgUri.getPath();
-                    editTextPhotoFiles.setText(editTextPhotoFiles.getText().append(sFilename)+";");
+                    //String sFilename=outputImgUri.getPath();
+                    //editTextPhotoFiles.setText(editTextPhotoFiles.getText().append(sFilename)+";");
+                    attachemntList.add(outputImgUri);
+                    updatePhotoList();
                 }
             }
         } catch (FileNotFoundException ex) {
@@ -181,6 +186,13 @@ public class EingangActivity extends AppCompatActivity {
         }
     }
 
+    void updatePhotoList(){
+        StringBuilder sb= new StringBuilder();
+        for (Uri u:attachemntList){
+            sb.append(u.getPath()+"\n");
+        }
+        editTextPhotoFiles.setText(sb.toString());
+    }
     public void sendEmail(ArrayList<Uri> attachemnts) {
         try {
             String email = "";//etEmail.getText().toString();

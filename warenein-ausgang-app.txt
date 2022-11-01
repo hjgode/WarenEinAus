@@ -1,0 +1,58 @@
+Wareneingang/-ausgang
+
+Wareneingang
+    Datum/Zeit
+    Anlieferer (Auswahl, frei)
+        DPD
+        DHL
+        UPS
+        Spedition
+        anderer
+    Art
+        Anzahl Pakete
+        Anzahl Paletten
+    Absender
+        Quad
+        Toshiba
+        anderer
+    Inhalt (mehrzeiliger Text)
+        unbekannt
+        Hersteller/Modell
+        Anzahl
+    Fotos
+        1
+        2
+        ...
+    Text (mehrzeiliger Text), evtl Barcodes: Seriennummern...
+    [sendEmail to]
+        To
+        text with images
+
+Warenausgang
+    Datum/Zeit Erfassung
+    Transportdienst (Auswahl, frei)
+        DPD
+        DHL
+        UPS
+        Spedition
+        anderer
+    Art
+        Anzahl Paletten
+        Anzahl Pakete
+    Adresse
+        Name
+        Str.
+        Ort
+    Inhalt (mehrzeiliger Text)
+        Auftragsnummer
+        unbekannt
+        Hersteller/Modell
+        Anzahl
+    Fotos
+        1
+        2
+        ...
+    Text (mehrzeiliger Text), evtl Barcodes: Seriennummern...
+
+Fotogröße ca 1MP, speichern als file (Internal Storgae of app) und sqlite speichert den unique namen
+
