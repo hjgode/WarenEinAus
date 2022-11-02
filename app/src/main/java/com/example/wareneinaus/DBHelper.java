@@ -75,7 +75,7 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db=this.getReadableDatabase();
         Cursor cursor=null;
         try{
-            cursor=db.rawQuery("Select * from "+ WARENEINGANG_TABLE_NAME,null);
+            cursor=db.rawQuery("Select * " + WARENEINGANGCOLUMN_ID +" as _id  from "+ WARENEINGANG_TABLE_NAME,null);
             return cursor;
 
         }
@@ -91,10 +91,10 @@ public class DBHelper extends SQLiteOpenHelper {
             String[] CompanyName = new String[]{"CompanyName"};
             SQLiteDatabase db=this.getReadableDatabase();
             Cursor c = this.getAllWareneingang();
-            String[] names=new String[]{"datum"};
+            String[] names=new String[]{WARENEINGANGCOLUMN_ID};
 
             SimpleCursorAdapter adapter = new SimpleCursorAdapter(context,
-                    R.layout.list_eingang_templ, c, names, 0, 0);
+                    R.layout.list_eingang_templ, c, names, id, 0);
             listView.setAdapter(adapter);
 
         } catch (Exception ex) {
