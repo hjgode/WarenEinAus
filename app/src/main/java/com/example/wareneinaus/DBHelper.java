@@ -118,9 +118,8 @@ public class DBHelper extends SQLiteOpenHelper {
         ListView lv = listView;// (ListView) findViewById(R.id.user_list);
         ListAdapter adapter = new SimpleAdapter(context, userList, R.layout.list_eingang_templ,
                 new String[]{"id","datum","absender","inhalt"},
-                new int[]{R.id.row_id, R.id.row_datum, R.id.row_absender, R.id.row_inhalt);
+                new int[]{R.id.row_id, R.id.row_datum, R.id.row_absender, R.id.row_inhalt});
         lv.setAdapter(adapter);
-        }
     }
 
     // Get  Details
