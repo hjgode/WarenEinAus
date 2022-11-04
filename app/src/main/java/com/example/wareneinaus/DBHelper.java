@@ -11,6 +11,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DBHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "wareneinaus.sqlite";
@@ -70,12 +71,18 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    // https://www.tutlane.com/tutorial/android/android-sqlite-listview-with-examples
     public Cursor getAllWareneingang(){
         ArrayList<String> arraylist= new ArrayList<String>();
         SQLiteDatabase db=this.getReadableDatabase();
         Cursor cursor=null;
         try{
-            cursor=db.rawQuery("Select * " + WARENEINGANGCOLUMN_ID +" as _id  from "+ WARENEINGANG_TABLE_NAME,null);
+            cursor=db.rawQuery("Select " +
+                    WARENEINGANGCOLUMN_ID+","+
+                    WARENEINGANGCOLUMN_ID +" as _id,"+
+                    WARENEINGANGCOLUMN_ABSENDER +", "+
+                    WARENEINGANGCOLUMN_INHALT +
+                    "  from "+ WARENEINGANG_TABLE_NAME,null);
             return cursor;
 
         }
@@ -101,6 +108,28 @@ public class DBHelper extends SQLiteOpenHelper {
             Toast.makeText(context, ex.getMessage().toString(), Toast.LENGTH_SHORT).show();
             Log.d("DBHelper", ex.getMessage());
         }
+    }
+
+    // Get  Details
+    public ArrayList<HashMap<String, String>> GetUsers(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ArrayList<HashMap<String, String>> userList = new ArrayList<>();
+        String query = "SELECT "+ WARENEINGANGCOLUMN_DATUM +","+
+                WARENEINGANGCOLUMN_ABSENDER +","+
+                WARENEINGANGCOLUMN_INHALT +" "+
+                " FROM "+ WARENEINGANG_TABLE_NAME;
+        Cursor cursor = db.rawQuery(query,null);
+        while (cursor.moveToNext()){
+            HashMap<String,String> daten = new HashMap<>();
+            int cx = cursor.getColumnIndex(WARENEINGANGCOLUMN_DATUM);
+            daten.put("dtum",cursor.getString(cx));
+            cx=cursor.getColumnIndex(WARENEINGANGCOLUMN_ABSENDER);
+            daten.put("absender",cursor.getString(cx));
+            cx=cursor.getColumnIndex(WARENEINGANGCOLUMN_INHALT);
+            daten.put("inhalt",cursor.getString(cx));
+            userList.add(daten);
+        }
+        return  userList;
     }
 
 //    public boolean updateStudentContact(Integer contactid,String contactname,String contactphone,String contactstreet,String contactemail, String contactplace)
