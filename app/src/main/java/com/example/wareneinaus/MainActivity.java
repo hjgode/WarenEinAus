@@ -28,26 +28,6 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     String[] perms = {"android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.CAMERA"};
 
     @Override
-    public void onRequestPermissionsResult(int permsRequestCode, String[] permissions, int[] grantResults){
-        super.onRequestPermissionsResult(permsRequestCode,permissions,grantResults);
-        switch(permsRequestCode){
-            case 200:
-                boolean locationAccepted = grantResults[0]== PackageManager.PERMISSION_GRANTED;
-                boolean cameraAccepted = grantResults[1]==PackageManager.PERMISSION_GRANTED;
-                break;
-        }
-    }
-
-    private boolean checkPermission() {
-        int result = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
-        int result1 = ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA);
-        return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
-    }
-
-    private void requestPermission() {
-        ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, PERMISSION_REQUEST_CODE);
-    }
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -71,4 +51,25 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
 //        dbHelper.addWareneingang(datum,"DPD","Paket","Absender","TM T88V","","hjgode@gmail.com");
         dbHelper.fillList2(context, listViewEingang);
     }
+    @Override
+    public void onRequestPermissionsResult(int permsRequestCode, String[] permissions, int[] grantResults){
+        super.onRequestPermissionsResult(permsRequestCode,permissions,grantResults);
+        switch(permsRequestCode){
+            case 200:
+                boolean locationAccepted = grantResults[0]== PackageManager.PERMISSION_GRANTED;
+                boolean cameraAccepted = grantResults[1]==PackageManager.PERMISSION_GRANTED;
+                break;
+        }
+    }
+
+    private boolean checkPermission() {
+        int result = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
+        int result1 = ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA);
+        return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, PERMISSION_REQUEST_CODE);
+    }
+
 }

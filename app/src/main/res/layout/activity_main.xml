@@ -19,12 +19,10 @@
 
     <ListView
         android:id="@+id/listViewEingang"
-        android:layout_width="0dp"
-        android:layout_height="124dp"
+        android:layout_width="411dp"
+        android:layout_height="186dp"
         android:layout_marginTop="12dp"
         android:background="#DFD6D6"
-        app:layout_constraintEnd_toEndOf="@+id/btnWarenEingang"
-        app:layout_constraintStart_toStartOf="@+id/btnWarenEingang"
         app:layout_constraintTop_toBottomOf="@+id/btnWarenEingang" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
