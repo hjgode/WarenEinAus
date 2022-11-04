@@ -163,10 +163,11 @@ public class EingangActivity extends AppCompatActivity {
                 cnt++;
             }else{
                 edit.setBackgroundColor(Color.WHITE);
+                b=true;
             }
         }
         if (cnt == myEditTextList.size()){
-            b=true;
+            cnt++;
         }
         return b;
     }
@@ -213,12 +214,17 @@ public class EingangActivity extends AppCompatActivity {
             String email = ((EditText)findViewById(R.id.editTextEmail)).getText().toString();
             String subject = "Waren-Eingag";
 
+            String sDatum=((EditText)findViewById(R.id.editTextDate)).getText().toString();
+            String sLieferrant=((EditText)findViewById(R.id.editTextLieferrant)).getText().toString();
+            String sArt=((EditText)findViewById(R.id.editTextArt)).getText().toString();
+            String sAbsender=((EditText)findViewById(R.id.editTextAbsender)).getText().toString();
+            String sInhalt=((EditText)findViewById(R.id.editTextInhalt)).getText().toString();
             String message =
-                    "Datum: " + ((EditText)findViewById(R.id.editTextDate)).getText().toString()+"\n"+
-                    "Geliefert von: " + ((EditText)findViewById(R.id.editTextLieferrant)).getText().toString()+ "\n"+
-                    "Art: " + ((EditText)findViewById(R.id.editTextArt)).getText().toString()+"\n"+
-                    "Absender: " + ((EditText)findViewById(R.id.editTextAbsender)).getText().toString()+"\n"+
-                    "Inhalt: " + ((EditText)findViewById(R.id.editTextInhalt)).getText().toString()+"\n";
+                    "Datum: " + sDatum+"\n"+
+                    "Geliefert von: " + sLieferrant+ "\n"+
+                    "Art: " + sArt + "\n" +
+                    "Absender: " + sAbsender + "\n" +
+                    "Inhalt: " + sInhalt +"\n";
 
             final Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
             //the below line was neccessary to avoid the root ClipData security exception
@@ -229,6 +235,8 @@ public class EingangActivity extends AppCompatActivity {
             emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, attachements);// attachements);
             emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, message);
             this.startActivity(Intent.createChooser(emailIntent, "Sending email..."));
+            DBHelper db=new DBHelper(context);
+            db.addWareneingang(sDatum,sLieferrant,sArt,sAbsender,sInhalt,attachements.toString(), email);
         } catch (Throwable t) {
             Toast.makeText(this, "Request failed try again: "+ t.toString(), Toast.LENGTH_LONG).show();
             Log.d("WARENEINGANG", t.toString());
