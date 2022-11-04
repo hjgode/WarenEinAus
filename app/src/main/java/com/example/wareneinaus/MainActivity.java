@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         ListView listViewEingang = (ListView) findViewById(R.id.listViewEingang);
         dbHelper = new DBHelper(context);
         String datum=utils.getDateString(new Date());
-        dbHelper.addWareneingang(datum,"DPD","Paket","Absender","TM T88V","","hjgode@gmail.com");
-        dbHelper.FillList(context, listViewEingang);
+//        dbHelper.addWareneingang(datum,"DPD","Paket","Absender","TM T88V","","hjgode@gmail.com");
+        dbHelper.fillList2(context, listViewEingang);
     }
 }

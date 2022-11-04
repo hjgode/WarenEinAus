@@ -126,7 +126,9 @@ public class DBHelper extends SQLiteOpenHelper {
     public ArrayList<HashMap<String, String>> GetAllWareneingang2() {
         SQLiteDatabase db = getWritableDatabase();
         ArrayList<HashMap<String, String>> wareneingangList = new ArrayList<>();
-        String query = "SELECT "+ WARENEINGANGCOLUMN_DATUM +","+
+        String query = "SELECT "+
+                WARENEINGANGCOLUMN_ID +","+
+                WARENEINGANGCOLUMN_DATUM +","+
                 WARENEINGANGCOLUMN_ABSENDER +","+
                 WARENEINGANGCOLUMN_INHALT +" "+
                 " FROM "+ WARENEINGANG_TABLE_NAME;
