@@ -116,7 +116,7 @@ public class DBHelper extends SQLiteOpenHelper {
 //        DBHelper db = this;
         ArrayList<HashMap<String, String>> userList = this.GetAllWareneingang2();
         ListView lv = listView;// (ListView) findViewById(R.id.user_list);
-        ListAdapter adapter = new SimpleAdapter(context, userList, R.layout.list_eingang_templ,
+        ListAdapter adapter = new SimpleAdapter(context, userList, R.layout.eingang_details_templ,
                 new String[]{"id","datum","absender","inhalt"},
                 new int[]{R.id.row_id, R.id.row_datum, R.id.row_absender, R.id.row_inhalt});
         lv.setAdapter(adapter);
