@@ -23,7 +23,7 @@
 
         <!-- FileProvider settings, after this configuration you can use FileProvider in your activity. -->
         <provider
-            android:authorities="com.example.wareneinaus.fileprovider"
+            android:authorities="com.example.wareneinaus.provider"
             android:name="androidx.core.content.FileProvider"
             android:exported="false"
             android:grantUriPermissions="true">

@@ -3,14 +3,15 @@ package com.example.wareneinaus;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
+import android.content.ClipData;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -40,14 +41,14 @@ public class EingangActivity extends AppCompatActivity {
     private File pictureSaveFolderPath;
 
     EditText editTextPhotoFiles;
-    ArrayList<Uri> attachementList =new ArrayList<Uri>();
+    ArrayList<Uri> attachmentList =new ArrayList<Uri>();
     Context context=this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        attachementList.clear();
+        attachmentList.clear();
 
         setContentView(R.layout.activity_eingang);
 
@@ -84,31 +85,26 @@ public class EingangActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    // Create a random image file name.
-                    String imageFileName = "outputImage_" + System.currentTimeMillis();// + ".png";
-                    // Construct a output file to save camera taken picture temporary.
-                    File outputImageFile = File.createTempFile(
-                            imageFileName,
-                            ".png",
-                            pictureSaveFolderPath);// new File(pictureSaveFolderPath, imageFileName);
+                    File outputImageFile = createImageFile();
                     // If cached temporary file exist then delete it.
                     if (outputImageFile.exists()) {
                         outputImageFile.delete();
                     }
-                    // Create a new temporary file.
-                    //outputImageFile.createNewFile();
                     // Get the output image file Uri wrapper object.
                     outputImgUri =
                             FileProvider.getUriForFile(context,
-                            "com.example.wareneinaus", outputImageFile); //getImageFileUriByOsVersion(outputImageFile);
-                    // Startup camera app.
-                    // Create an implicit intent which require take picture action..
-                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    // Specify the output image uri for the camera app to save taken picture.
-                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputImgUri);
-                    // Start the camera activity with the request code and waiting for the app process result.
-                    startActivityForResult(cameraIntent, REQUEST_CODE_TAKE_PICTURE);
-                    Log.d("TAG_TAKE_PICTURE", "Filename="+outputImgUri.getPath());
+                            BuildConfig.APPLICATION_ID+".provider", outputImageFile); //see Mainfest.xml for authority
+                    if (outputImageFile != null) {
+//                        context.grantUriPermission("", outputImgUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        // Startup camera app.
+                        // Create an implicit intent which require take picture action..
+                        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        // Specify the output image uri for the camera app to save taken picture.
+                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputImgUri);
+                        // Start the camera activity with the request code and waiting for the app process result.
+                        startActivityForResult(cameraIntent, REQUEST_CODE_TAKE_PICTURE);
+                        Log.d("TAG_TAKE_PICTURE", "Filename="+outputImgUri.getPath());
+                    }
                 }catch(IOException ex) {
                     Log.e("TAG_TAKE_PICTURE", ex.getMessage(), ex);
                 }
@@ -122,29 +118,29 @@ public class EingangActivity extends AppCompatActivity {
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if (!bCheckInput()){
-//                    return;
-//                }
-                sendEmail(attachementList);
+                if (!bCheckInput()){
+                    return;
+                }
+                sendEmail(attachmentList);
             }
         });
     }
 
-    String imageFilePath;
+    String mImageFilePath;
     File createImageFile() throws IOException {
         String timeStamp =
                 new SimpleDateFormat("yyyyMMdd_HHmmss",
                         Locale.getDefault()).format(new Date());
         String imageFileName = "IMG_" + timeStamp + "_";
-        File storageDir =
-                getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File storageDir =Environment.getExternalStorageDirectory();
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
 
-        imageFilePath = image.getAbsolutePath();
+        mImageFilePath = "file:" + image.getAbsolutePath();
+        Log.d("WARENEINGANG", "imagefile is"+mImageFilePath);
         return image;
     }
 
@@ -161,48 +157,18 @@ public class EingangActivity extends AppCompatActivity {
         //myEditTextList.add((EditText)findViewById(R.id.editTextFotos));
 
         for(EditText edit: myEditTextList){
-            if(edit.getText().equals("")){
+            String e=edit.getText().toString();
+            if(e.length() == 0){
                 edit.setBackgroundColor(Color.MAGENTA);
                 cnt++;
+            }else{
+                edit.setBackgroundColor(Color.WHITE);
             }
         }
         if (cnt == myEditTextList.size()){
             b=true;
         }
         return b;
-    }
-
-    /* Get the file Uri object by android os version.
-     *  return a Uri object. */
-    private Uri getImageFileUriByOsVersion(File file)
-    {
-        Uri ret = null;
-        // Get output image unique resource identifier. This uri is used by camera app to save taken picture temporary.
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-        {
-            // /sdcard/ folder link to /storage/41B7-12F1 folder
-            // so below code return /storage/41B7-12F1
-            File externalStorageRootDir = Environment.getExternalStorageDirectory();
-
-            // contextRootDir = /data/user/0/com.dev2qa.example/files in my Huawei mate 8.
-            File contextRootDir = getFilesDir();
-
-            // contextCacheDir = /data/user/0/com.dev2qa.example/cache in my Huawei mate 8.
-            File contextCacheDir = getCacheDir();
-
-            // For android os version bigger than or equal to 7.0 use FileProvider class.
-            // Otherwise android os will throw FileUriExposedException.
-            // Because the system considers it is unsafe to use local real path uri directly.
-            Context ctx = getApplicationContext();
-            ret = FileProvider.getUriForFile(ctx, "com.example.wareneinaus.fileprovider", file);
-        }else
-        {
-            // For android os version less than 7.0 there are no safety issue,
-            // So we can get the output image uri by file real local path directly.
-            ret = Uri.fromFile(file);
-        }
-
-        return ret;
     }
 
     /* This method is used to process the result of camera app. It will be invoked after camera app return.
@@ -225,8 +191,9 @@ public class EingangActivity extends AppCompatActivity {
                     //takePictureImageView.setImageBitmap(pictureBitmap);
                     //String sFilename=outputImgUri.getPath();
                     //editTextPhotoFiles.setText(editTextPhotoFiles.getText().append(sFilename)+";");
-                    attachementList.add(outputImgUri);
+                    attachmentList.add(outputImgUri);
                     updatePhotoList();
+                    Log.d("PhotoTaken","saved to "+outputImgUri.toString());
                 }
             }
         } catch (FileNotFoundException ex) {
@@ -236,15 +203,15 @@ public class EingangActivity extends AppCompatActivity {
 
     void updatePhotoList(){
         StringBuilder sb= new StringBuilder();
-        for (Uri u: attachementList){
+        for (Uri u: attachmentList){
             sb.append(u.getPath()+"\n");
         }
         editTextPhotoFiles.setText(sb.toString());
     }
     public void sendEmail(ArrayList<Uri> attachements) {
         try {
-            String email = ((EditText)findViewById(R.id.editTextEmail)).getText().toString(); // "";//etEmail.getText().toString();
-            String subject = "Waren-Eingag";//etSubject.getText().toString();
+            String email = ((EditText)findViewById(R.id.editTextEmail)).getText().toString();
+            String subject = "Waren-Eingag";
 
             String message =
                     "Datum: " + ((EditText)findViewById(R.id.editTextDate)).getText().toString()+"\n"+
@@ -253,16 +220,18 @@ public class EingangActivity extends AppCompatActivity {
                     "Absender: " + ((EditText)findViewById(R.id.editTextAbsender)).getText().toString()+"\n"+
                     "Inhalt: " + ((EditText)findViewById(R.id.editTextInhalt)).getText().toString()+"\n";
 
-            final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+            final Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+            //the below line was neccessary to avoid the root ClipData security exception
+            emailIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             emailIntent.setType("plain/text");
             emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{email});
             emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
-            if (attachementList.size()>0)
-                emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, attachements);
+            emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, attachements);// attachements);
             emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, message);
             this.startActivity(Intent.createChooser(emailIntent, "Sending email..."));
         } catch (Throwable t) {
             Toast.makeText(this, "Request failed try again: "+ t.toString(), Toast.LENGTH_LONG).show();
+            Log.d("WARENEINGANG", t.toString());
         }
     }
 
