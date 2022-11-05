@@ -29,6 +29,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String WARENEINGANGCOLUMN_EMAIL = "email";
 
     Context _context;
+    static ListAdapter adapter=null;
 
     public DBHelper(Context context)
     {
@@ -59,67 +60,36 @@ public class DBHelper extends SQLiteOpenHelper {
     }
     public boolean addWareneingang(String datum,String lieferrant,String art,String absender, String inhalt, String fotos, String email){
         /*,*/
-        SQLiteDatabase db=this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(WARENEINGANGCOLUMN_DATUM,datum);
-        contentValues.put(WARENEINGANGCOLUMN_LIEFERRANT, lieferrant);
-        contentValues.put(WARENEINGANGCOLUMN_ART,art);
-        contentValues.put(WARENEINGANGCOLUMN_ABSENDER,absender);
-        contentValues.put(WARENEINGANGCOLUMN_INHALT,inhalt);
-        contentValues.put(WARENEINGANGCOLUMN_FOTOS,fotos);
-        contentValues.put(WARENEINGANGCOLUMN_EMAIL,email);
-        db.insert(WARENEINGANG_TABLE_NAME, null, contentValues);
-        db.close();
-        return true;
-    }
-
-    // https://www.tutlane.com/tutorial/android/android-sqlite-listview-with-examples
-    public Cursor getAllWareneingang(){
-        ArrayList<String> arraylist= new ArrayList<String>();
-        SQLiteDatabase db=this.getReadableDatabase();
-        Cursor cursor=null;
-        try{
-            cursor=db.rawQuery("Select " +
-                    WARENEINGANGCOLUMN_ID+","+
-                    WARENEINGANGCOLUMN_ID +" as _id,"+
-                    WARENEINGANGCOLUMN_ABSENDER +", "+
-                    WARENEINGANGCOLUMN_INHALT +
-                    "  from "+ WARENEINGANG_TABLE_NAME,null);
-            return cursor;
-
-        }
-        catch (Exception ex){
-            Toast.makeText(_context, ex.getMessage().toString(), Toast.LENGTH_SHORT).show();
-        }
-        return cursor;
-    }
-
-    public void FillList(Context context, ListView listView) {
         try {
-            int[] id = {R.id.txtListElement};
-            String[] CompanyName = new String[]{"CompanyName"};
-            SQLiteDatabase db=this.getReadableDatabase();
-            Cursor c = this.getAllWareneingang();
-            String[] names=new String[]{WARENEINGANGCOLUMN_ID};
-
-            SimpleCursorAdapter adapter = new SimpleCursorAdapter(context,
-                    R.layout.list_eingang_templ, c, names, id, 0);
-            listView.setAdapter(adapter);
-
-        } catch (Exception ex) {
-            Toast.makeText(context, ex.getMessage().toString(), Toast.LENGTH_SHORT).show();
-            Log.d("DBHelper", ex.getMessage());
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(WARENEINGANGCOLUMN_DATUM, datum);
+            contentValues.put(WARENEINGANGCOLUMN_LIEFERRANT, lieferrant);
+            contentValues.put(WARENEINGANGCOLUMN_ART, art);
+            contentValues.put(WARENEINGANGCOLUMN_ABSENDER, absender);
+            contentValues.put(WARENEINGANGCOLUMN_INHALT, inhalt);
+            contentValues.put(WARENEINGANGCOLUMN_FOTOS, fotos);
+            contentValues.put(WARENEINGANGCOLUMN_EMAIL, email);
+            db.insert(WARENEINGANG_TABLE_NAME, null, contentValues);
+            adapter.notifyAll();
+            db.close();
+        }catch (Exception ex){
+            Log.d("DBHelper","addWareneingang: Exception "+ex.getMessage());
         }
+        return true;
     }
 
     public void fillList2(Context context, ListView listView){
 //        DBHelper db = this;
         ArrayList<HashMap<String, String>> userList = this.GetAllWareneingang2();
         ListView lv = listView;// (ListView) findViewById(R.id.user_list);
-        ListAdapter adapter = new SimpleAdapter(context, userList, R.layout.eingang_details_templ,
-                new String[]{"id","datum","absender","inhalt"},
-                new int[]{R.id.row_id, R.id.row_datum, R.id.row_absender, R.id.row_inhalt});
-        lv.setAdapter(adapter);
+        if(adapter == null) {
+            adapter = new SimpleAdapter(context, userList, R.layout.eingang_details_templ,
+                    new String[]{"id", "datum", "absender", "inhalt"},
+                    new int[]{R.id.row_id, R.id.row_datum, R.id.row_absender, R.id.row_inhalt});
+
+            lv.setAdapter(adapter);
+        }
     }
 
     // Get  Details
@@ -147,20 +117,5 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return  wareneingangList;
     }
-
-//    public boolean updateStudentContact(Integer contactid,String contactname,String contactphone,String contactstreet,String contactemail, String contactplace)
-//    {
-//        /*,String contactname,*/
-//        SQLiteDatabase db=this.getWritableDatabase();
-//        ContentValues contantValues = new ContentValues();
-//        contantValues.put("name",contactname);
-//        contantValues.put("phone", contactphone);
-//        contantValues.put("street",contactstreet);
-//        contantValues.put("email",contactemail);
-//        contantValues.put("place",contactplace);
-//        db.update("mycontacts", contantValues, "id = ?", new String[]{Integer.toString(contactid)});
-//        db.close();
-//        return true;
-//    }
 
 }

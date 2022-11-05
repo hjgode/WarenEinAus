@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,13 +25,20 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     Context context=this;
     DBHelper dbHelper;
 
+    SharedPreferences sharedPreferences;
+
     final static int PERMISSION_REQUEST_CODE = 200;
     String[] perms = {"android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.CAMERA"};
+    ListView listViewEingang;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+
+        dbHelper=new DBHelper(context);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(perms, PERMISSION_REQUEST_CODE);
@@ -46,9 +54,21 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
             }
         });
         ListView listViewEingang = (ListView) findViewById(R.id.listViewEingang);
-        dbHelper = new DBHelper(context);
-        String datum=utils.getDateString(new Date());
-//        dbHelper.addWareneingang(datum,"DPD","Paket","Absender","TM T88V","","hjgode@gmail.com");
+        fillListView();;
+
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        dbHelper.fillList2(context, listViewEingang);
+    }
+
+    void fillListView(){
+        listViewEingang = (ListView) findViewById(R.id.listViewEingang);
+        //dbHelper = new DBHelper(context);
+//        String datum=utils.getDateString(new Date());
+//        dbHelper.addWareneingang(datum,"DPD","1 Paket","ACME GmbH\nMusterstadt\nMusterstrasse","5xTM T88V\n10xHP Engae One","/storage/emulated/0/foto.jpg","hjgode@gmail.com");
         dbHelper.fillList2(context, listViewEingang);
     }
     @Override

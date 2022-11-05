@@ -50,6 +50,8 @@ public class EingangActivity extends AppCompatActivity {
 
         attachmentList.clear();
 
+        String defEmail=utils.getSettingEmail(this);
+
         setContentView(R.layout.activity_eingang);
 
         EditText editTextDatum;
@@ -57,6 +59,7 @@ public class EingangActivity extends AppCompatActivity {
         Date datumNow=new Date();
 
         editTextDatum.setText(utils.getDateString(datumNow));
+        editTextDatum.setEnabled(false);
 
         AutoCompleteTextView autoCompleteTextView=(AutoCompleteTextView)findViewById(R.id.editTextLieferrant);
         ArrayAdapter<String> adapterLieferrant = new ArrayAdapter<String>(this,
@@ -70,15 +73,16 @@ public class EingangActivity extends AppCompatActivity {
         autoCompleteTextViewArt.setAdapter(adapterArt);
         autoCompleteTextViewArt.setThreshold(1);
 
+        EditText editTextEmail=(EditText) findViewById(R.id.editTextEmail);
+        editTextEmail.setText(defEmail);
+
         editTextPhotoFiles=(EditText)findViewById(R.id.editTextFotos);
 
-        // Get this app's external cache directory, manipulate this directory in app do not need android os system permission check.
-        // The cache folder is application specific, when the app is uninstalled it will be removed also.
         File storageDir =
                 getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         //https://medium.com/android-news/androids-new-image-capture-from-a-camera-using-file-provider-dd178519a954
 
-        pictureSaveFolderPath = storageDir;// getExternalCacheDir();
+        pictureSaveFolderPath = storageDir;
 
         Button btnAddPhoto=(Button)findViewById(R.id.btnAddPhoto);
         btnAddPhoto.setOnClickListener(new View.OnClickListener() {
@@ -225,8 +229,10 @@ public class EingangActivity extends AppCompatActivity {
                     "Art: " + sArt + "\n" +
                     "Absender: " + sAbsender + "\n" +
                     "Inhalt: " + sInhalt +"\n";
-
-            final Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+            //Do we need thos?
+            ArrayList<CharSequence> aMessage=new ArrayList<CharSequence>();
+            aMessage.add(message);
+            final Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);//as we attach multiple files
             //the below line was neccessary to avoid the root ClipData security exception
             emailIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             emailIntent.setType("plain/text");
@@ -237,6 +243,9 @@ public class EingangActivity extends AppCompatActivity {
             this.startActivity(Intent.createChooser(emailIntent, "Sending email..."));
             DBHelper db=new DBHelper(context);
             db.addWareneingang(sDatum,sLieferrant,sArt,sAbsender,sInhalt,attachements.toString(), email);
+
+            utils.setSettingEmail(this, email);
+
         } catch (Throwable t) {
             Toast.makeText(this, "Request failed try again: "+ t.toString(), Toast.LENGTH_LONG).show();
             Log.d("WARENEINGANG", t.toString());
