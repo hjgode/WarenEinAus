@@ -21,6 +21,7 @@
         android:layout_alignBottom="@+id/row_id"
         android:layout_alignParentRight="true"
         android:textSize="17dp" />
+
     <TextView
         android:id="@+id/row_absender"
         android:layout_width="wrap_content"
@@ -28,6 +29,8 @@
         android:layout_below="@id/row_id"
         android:layout_alignLeft="@+id/row_id"
         android:layout_marginTop="7dp"
+        android:inputType="textMultiLine"
+
         android:textColor="#343434"
         android:textSize="14dp" />
     <TextView
@@ -39,5 +42,6 @@
         android:layout_alignParentRight="true"
         android:layout_marginLeft="14dp"
         android:textColor="#343434"
+        android:inputType="textMultiLine"
         android:textSize="14dp" />
 </RelativeLayout>
