@@ -216,6 +216,9 @@ public class EingangActivity extends AppCompatActivity {
                     updatePhotoList();
                     Log.d("PhotoTaken","saved to "+outputImgUri.toString());
                 }
+            }else if (requestCode == 1234){
+                //email sent
+                Toast.makeText(context, "EMail gesendet", Toast.LENGTH_LONG);
             }
         } catch (FileNotFoundException ex) {
             Log.e("TAG_TAKE_PICTURE", ex.getMessage(), ex);
@@ -258,7 +261,9 @@ public class EingangActivity extends AppCompatActivity {
             emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
             emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, attachements);// attachements);
             emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, message);
-            this.startActivity(Intent.createChooser(emailIntent, "Sending email..."));
+            //emailIntent.setData(Uri.parse("mailto:"));
+//            this.startActivity(Intent.createChooser(emailIntent, "Sending email..."));
+            this.startActivityForResult(emailIntent, 1234);// Intent.createChooser(emailIntent, "Sending email..."));
             DBHelper db=new DBHelper(context);
             db.addWareneingang(sDatum,sLieferrant,sArt,sAbsender,sName,sInhalt,attachements.toString(), email);
 
