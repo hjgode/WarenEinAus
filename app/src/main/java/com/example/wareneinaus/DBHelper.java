@@ -30,7 +30,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String WARENEINGANGCOLUMN_EMAIL = "email";
 
     Context _context;
-    static ListAdapter adapter=null;
+    ListAdapter adapter=null;
 
     public DBHelper(Context context)
     {
@@ -78,7 +78,7 @@ public class DBHelper extends SQLiteOpenHelper {
             contentValues.put(WARENEINGANGCOLUMN_FOTOS, fotos);
             contentValues.put(WARENEINGANGCOLUMN_EMAIL, email);
             db.insert(WARENEINGANG_TABLE_NAME, null, contentValues);
-            adapter.notifyAll();
+            db.notifyAll();
             db.close();
         }catch (Exception ex){
             Log.d("DBHelper","addWareneingang: Exception "+ex.getMessage());
@@ -88,27 +88,25 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public void fillList2(Context context, ListView listView){
 //        DBHelper db = this;
-        ArrayList<HashMap<String, String>> userList = this.GetAllWareneingang2();
+        ArrayList<HashMap<String, String>> dataList = this.GetAllWareneingang2();
         ListView lv = listView;// (ListView) findViewById(R.id.user_list);
-        if(adapter == null) {
-            adapter = new SimpleAdapter(context, userList, R.layout.eingang_details_templ,
-                    new String[]{"id", "datum", "absender", "inhalt"},
-                    new int[]{R.id.row_id, R.id.row_datum, R.id.row_absender, R.id.row_inhalt});
+        adapter = new SimpleAdapter(context, dataList, R.layout.eingang_details_templ,
+                new String[]{"id", "datum", "absender", "inhalt"},
+                new int[]{R.id.row_id, R.id.row_datum, R.id.row_absender, R.id.row_inhalt});
 
-            lv.setAdapter(adapter);
-        }
+        lv.setAdapter(adapter);
     }
 
     // Get  Details
     public ArrayList<HashMap<String, String>> GetAllWareneingang2() {
-        SQLiteDatabase db = getWritableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
         ArrayList<HashMap<String, String>> wareneingangList = new ArrayList<>();
         String query = "SELECT "+
                 WARENEINGANGCOLUMN_ID +","+
                 WARENEINGANGCOLUMN_DATUM +","+
                 WARENEINGANGCOLUMN_ABSENDER +","+
                 WARENEINGANGCOLUMN_INHALT +" "+
-                " FROM "+ WARENEINGANG_TABLE_NAME;
+                " FROM "+ WARENEINGANG_TABLE_NAME + " ORDER BY "+ WARENEINGANGCOLUMN_ID + " DESC";
         Cursor cursor = db.rawQuery(query,null);
         while (cursor.moveToNext()){
             HashMap<String,String> daten = new HashMap<>();

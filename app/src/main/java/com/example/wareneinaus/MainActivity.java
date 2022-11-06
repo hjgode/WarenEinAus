@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.Date;
+import java.util.List;
+
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.Manifest.permission.CAMERA;
 
@@ -65,11 +67,15 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     }
 
     void fillListView(){
-        listViewEingang = (ListView) findViewById(R.id.listViewEingang);
+        if (listViewEingang==null)
+            listViewEingang = (ListView) findViewById(R.id.listViewEingang);
+
         //dbHelper = new DBHelper(context);
 //        String datum=utils.getDateString(new Date());
 //        dbHelper.addWareneingang(datum,"DPD","1 Paket","ACME GmbH\nMusterstadt\nMusterstrasse","5xTM T88V\n10xHP Engae One","/storage/emulated/0/foto.jpg","hjgode@gmail.com");
         dbHelper.fillList2(context, listViewEingang);
+//        listViewEingang.invalidateViews();
+//        listViewEingang.refreshDrawableState();
     }
     @Override
     public void onRequestPermissionsResult(int permsRequestCode, String[] permissions, int[] grantResults){
