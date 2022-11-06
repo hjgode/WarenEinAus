@@ -24,6 +24,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String WARENEINGANGCOLUMN_LIEFERRANT = "lieferrant";
     public static final String WARENEINGANGCOLUMN_ART = "art";
     public static final String WARENEINGANGCOLUMN_ABSENDER = "absender";
+    public static final String WARENEINGANGCOLUMN_NAME = "name";
     public static final String WARENEINGANGCOLUMN_INHALT = "inhalt";
     public static final String WARENEINGANGCOLUMN_FOTOS = "fotos";
     public static final String WARENEINGANGCOLUMN_EMAIL = "email";
@@ -47,6 +48,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         WARENEINGANGCOLUMN_LIEFERRANT+" text,"+
                         WARENEINGANGCOLUMN_ART+" text,"+
                         WARENEINGANGCOLUMN_ABSENDER+" text," +
+                        WARENEINGANGCOLUMN_NAME+" text," +
                         WARENEINGANGCOLUMN_INHALT+" text, "+
                         WARENEINGANGCOLUMN_FOTOS+" text," +
                         WARENEINGANGCOLUMN_EMAIL+" text"+
@@ -58,7 +60,11 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS "+ WARENEINGANG_TABLE_NAME);
         onCreate(db);
     }
-    public boolean addWareneingang(String datum,String lieferrant,String art,String absender, String inhalt, String fotos, String email){
+    public void doUpgrade(){
+        SQLiteDatabase db=this.getWritableDatabase();
+        this.onUpgrade(db,1,2);
+    }
+    public boolean addWareneingang(String datum,String lieferrant,String art,String absender, String name, String inhalt, String fotos, String email){
         /*,*/
         try {
             SQLiteDatabase db = this.getWritableDatabase();
@@ -67,6 +73,7 @@ public class DBHelper extends SQLiteOpenHelper {
             contentValues.put(WARENEINGANGCOLUMN_LIEFERRANT, lieferrant);
             contentValues.put(WARENEINGANGCOLUMN_ART, art);
             contentValues.put(WARENEINGANGCOLUMN_ABSENDER, absender);
+            contentValues.put(WARENEINGANGCOLUMN_NAME, name);
             contentValues.put(WARENEINGANGCOLUMN_INHALT, inhalt);
             contentValues.put(WARENEINGANGCOLUMN_FOTOS, fotos);
             contentValues.put(WARENEINGANGCOLUMN_EMAIL, email);

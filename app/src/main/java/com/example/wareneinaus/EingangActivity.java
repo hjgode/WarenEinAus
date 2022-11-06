@@ -50,6 +50,10 @@ public class EingangActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //only for init!
+//        DBHelper dbHelper=new DBHelper(this);
+//        dbHelper.doUpgrade();
+
         attachmentList.clear();
 
         String defEmail=utils.getSettingEmail(this);
@@ -167,6 +171,7 @@ public class EingangActivity extends AppCompatActivity {
         myEditTextList.add((EditText)findViewById(R.id.editTextLieferrant));
         myEditTextList.add((EditText)findViewById(R.id.editTextArt));
         myEditTextList.add((EditText)findViewById(R.id.editTextAbsender));
+        myEditTextList.add((EditText)findViewById(R.id.editTextName));
         myEditTextList.add((EditText)findViewById(R.id.editTextInhalt));
         myEditTextList.add((EditText)findViewById(R.id.editTextEmail));
         //myEditTextList.add((EditText)findViewById(R.id.editTextFotos));
@@ -233,12 +238,14 @@ public class EingangActivity extends AppCompatActivity {
             String sLieferrant=((EditText)findViewById(R.id.editTextLieferrant)).getText().toString();
             String sArt=((EditText)findViewById(R.id.editTextArt)).getText().toString();
             String sAbsender=((EditText)findViewById(R.id.editTextAbsender)).getText().toString();
+            String sName =((EditText)findViewById(R.id.editTextName)).getText().toString();
             String sInhalt=((EditText)findViewById(R.id.editTextInhalt)).getText().toString();
             String message =
                     "Datum: " + sDatum+"\n"+
                     "Geliefert von: " + sLieferrant+ "\n"+
                     "Art: " + sArt + "\n" +
                     "Absender: " + sAbsender + "\n" +
+                            "Name: " + sName + "\n" +
                     "Inhalt: " + sInhalt +"\n";
             //Do we need thos?
             ArrayList<CharSequence> aMessage=new ArrayList<CharSequence>();
@@ -253,7 +260,7 @@ public class EingangActivity extends AppCompatActivity {
             emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, message);
             this.startActivity(Intent.createChooser(emailIntent, "Sending email..."));
             DBHelper db=new DBHelper(context);
-            db.addWareneingang(sDatum,sLieferrant,sArt,sAbsender,sInhalt,attachements.toString(), email);
+            db.addWareneingang(sDatum,sLieferrant,sArt,sAbsender,sName,sInhalt,attachements.toString(), email);
 
             utils.setSettingEmail(this, email);
 
@@ -273,7 +280,7 @@ public class EingangActivity extends AppCompatActivity {
 
         // add a list
 
-        String[] options = {"Option1", "Option2", "Option3", "Option4", "Option3"};
+        String[] options = {"Quad Computer", "Real", "Ingram", "Unbekannt"};
 
         //Pass the array list in Alert dialog
         builder.setItems(options, new DialogInterface.OnClickListener() {

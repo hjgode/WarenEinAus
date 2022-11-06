@@ -10,25 +10,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="34dp"
-            android:layout_marginTop="12sp"
-            android:text="Waren Eingang"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="34dp"
+                android:layout_marginLeft="34dp"
+                android:layout_marginTop="12sp"
+                android:text="Waren Eingang"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/btnSend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="36sp"
-            android:layout_marginLeft="36sp"
-            android:text="Send" />
-
+            <Button
+                android:id="@+id/btnSend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="36sp"
+                android:layout_marginLeft="36sp"
+                android:text="Send" />
+        </LinearLayout>
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -56,7 +60,8 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="8sp"
                         android:ems="10"
-                        android:inputType="date" />
+                        android:inputType="date"
+                        android:textSize="14sp" />
 
                 </TableRow>
 
@@ -76,7 +81,8 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="8sp"
                         android:ems="10"
-                        android:inputType="textNoSuggestions" />
+                        android:inputType="textNoSuggestions"
+                        android:textSize="14sp" />
                 </TableRow>
 
                 <TableRow
@@ -94,7 +100,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="8sp"
-                        android:ems="10" />
+                        android:ems="10"
+                        android:textSize="14sp" />
                 </TableRow>
 
                 <TableRow
@@ -114,7 +121,8 @@
                         android:layout_margin="8sp"
                         android:ems="10"
                         android:inputType="textMultiLine|textNoSuggestions"
-                        android:scrollbars="vertical" />
+                        android:scrollbars="vertical"
+                        android:textSize="14sp" />
 
                     <Button
                         android:id="@+id/btnAbsenderOptions"
@@ -123,7 +131,25 @@
                         android:text="?" />
 
                 </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8sp"
+                    android:text="Für:" />
+
+                <EditText
+                    android:id="@+id/editTextName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8sp"
+                    android:ems="10"
+                    android:inputType="textNoSuggestions"
+                    android:textSize="14sp" />
+                </TableRow>
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -141,7 +167,8 @@
                         android:layout_margin="8sp"
                         android:ems="10"
                         android:inputType="textMultiLine|textNoSuggestions"
-                        android:scrollbars="vertical" />
+                        android:scrollbars="vertical"
+                        android:textSize="14sp" />
 
                 </TableRow>
 
@@ -161,7 +188,8 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="8sp"
                         android:ems="10"
-                        android:scrollbars="vertical" />
+                        android:scrollbars="vertical"
+                        android:textSize="14sp" />
 
                 </TableRow>
 
@@ -183,7 +211,8 @@
                         android:layout_margin="8sp"
                         android:ems="10"
                         android:inputType="textMultiLine|textNoSuggestions"
-                        android:scrollbars="vertical" />
+                        android:scrollbars="vertical"
+                        android:textSize="14sp" />
 
                     <Button
                         android:id="@+id/btnAddPhoto"
