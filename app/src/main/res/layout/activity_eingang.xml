@@ -116,6 +116,12 @@
                         android:inputType="textMultiLine|textNoSuggestions"
                         android:scrollbars="vertical" />
 
+                    <Button
+                        android:id="@+id/btnAbsenderOptions"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="?" />
+
                 </TableRow>
 
                 <TableRow

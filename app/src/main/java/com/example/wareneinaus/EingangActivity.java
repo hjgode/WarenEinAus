@@ -1,11 +1,13 @@
 package com.example.wareneinaus;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import android.content.ClipData;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -126,6 +128,15 @@ public class EingangActivity extends AppCompatActivity {
                     return;
                 }
                 sendEmail(attachmentList);
+            }
+        });
+
+        EditText editTextAbsender=(EditText)findViewById(R.id.editTextAbsender);
+        Button btnOptionsAbsender=(Button)findViewById(R.id.btnAbsenderOptions);
+        btnOptionsAbsender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showOptions(editTextAbsender);
             }
         });
     }
@@ -252,4 +263,36 @@ public class EingangActivity extends AppCompatActivity {
         }
     }
 
+    public void showOptions(EditText editText)
+    {
+        String selected="";
+        // setup the alert builder
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Choose an Option");
+
+        // add a list
+
+        String[] options = {"Option1", "Option2", "Option3", "Option4", "Option3"};
+
+        //Pass the array list in Alert dialog
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                editText.setText(options[which]);
+/*
+                switch (which) {
+                    case 0: editText.setText(options[0]);
+                    case 1: // Config it as you need here
+                    case 2:
+                    case 3:
+                    case 4:
+                }
+*/
+            }
+        });
+// create and show the alert dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 }
