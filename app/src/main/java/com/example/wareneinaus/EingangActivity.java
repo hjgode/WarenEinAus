@@ -143,6 +143,32 @@ public class EingangActivity extends AppCompatActivity {
                 showOptions(editTextAbsender);
             }
         });
+
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        //Yes button clicked
+                        clearForm();
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+                        break;
+                }
+            }
+        };
+
+        Button btnClearForm=(Button)findViewById(R.id.btnClearForm);
+        btnClearForm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("Das Formular löschen?").setPositiveButton("Ja", dialogClickListener)
+                        .setNegativeButton("Nein", dialogClickListener).show();
+            }
+        });
     }
 
     String mImageFilePath;
@@ -163,6 +189,25 @@ public class EingangActivity extends AppCompatActivity {
         return image;
     }
 
+    void clearForm(){
+        int cnt=0;
+        ArrayList<EditText> myEditTextList = new ArrayList<EditText>();
+        myEditTextList.add((EditText)findViewById(R.id.editTextDate));
+        myEditTextList.add((EditText)findViewById(R.id.editTextLieferrant));
+        myEditTextList.add((EditText)findViewById(R.id.editTextArt));
+        myEditTextList.add((EditText)findViewById(R.id.editTextAbsender));
+        myEditTextList.add((EditText)findViewById(R.id.editTextName));
+        myEditTextList.add((EditText)findViewById(R.id.editTextInhalt));
+        myEditTextList.add((EditText)findViewById(R.id.editTextEmail));
+        myEditTextList.add((EditText)findViewById(R.id.editTextFotos));
+
+        for(EditText edit: myEditTextList) {
+            edit.setText("");
+        }
+        Date datumNow=new Date();
+
+        ((EditText)findViewById(R.id.editTextDate)).setText(utils.getDateString(datumNow));
+    }
     Boolean bCheckInput(){
         Boolean b=false;
         int cnt=0;
