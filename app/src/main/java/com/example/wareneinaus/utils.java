@@ -31,6 +31,14 @@ public class utils {
             "Paket", "Palette", "Anderes"
     };
 
+    public static final String[] Empfaenger = new String[]{
+            "melina.kreiskoether@lodata.de",
+            "jennifer.lose@lodata.de",
+            "heinz-josef.gode@lodata.de",
+            "friedhelm.lose@lodata.de",
+            "jens.schiess@lodata.de"
+    };
+
     public static String getSettingEmail(Activity activity){
         SharedPreferences sharedPreferences = activity.getPreferences(MODE_PRIVATE);
         String defaultValue = "";

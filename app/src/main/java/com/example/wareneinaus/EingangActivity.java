@@ -23,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -79,8 +80,14 @@ public class EingangActivity extends AppCompatActivity {
         autoCompleteTextViewArt.setAdapter(adapterArt);
         autoCompleteTextViewArt.setThreshold(1);
 
-        EditText editTextEmail=(EditText) findViewById(R.id.editTextEmail);
-        editTextEmail.setText(defEmail);
+        MultiAutoCompleteTextView editTextEmail=(MultiAutoCompleteTextView) findViewById(R.id.editTextEmail);
+        ArrayAdapter<String> adapterEmail = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, utils.Empfaenger);
+        editTextEmail.setThreshold(1);
+        editTextEmail.setTokenizer(new SemicolonTokenizer() );
+        editTextEmail.setAdapter(adapterEmail);
+
+        //editTextEmail.setText(defEmail);
 
         editTextPhotoFiles=(EditText)findViewById(R.id.editTextFotos);
 
@@ -204,6 +211,8 @@ public class EingangActivity extends AppCompatActivity {
         for(EditText edit: myEditTextList) {
             edit.setText("");
         }
+        attachmentList.clear();
+
         Date datumNow=new Date();
 
         ((EditText)findViewById(R.id.editTextDate)).setText(utils.getDateString(datumNow));
